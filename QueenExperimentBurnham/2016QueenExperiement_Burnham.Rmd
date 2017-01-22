@@ -1,0 +1,452 @@
+---
+title: "2016 Burnham & Lehman Queen Experirment"
+author: "P. Alexander Burnham"
+date: "September 14, 2016"
+output: pdf_document
+---
+
+**Metadata:** 
+
+**Author:** P. Alexander Burnham
+
+**Date:** 10 August 2016
+
+**Data Set:** These data were collected in 2016 in New York state by Andre Burnham and the Hamilton College bee research team from two yards in NY owned by one beekeeper who volunteered for the study.
+
+**Data Source:** 2016 Hamilton Bee Research Project
+
+**Funding Source:** Hamilton College undergraduate research grants
+
+**Data Collection:** Weights of colonies were obtained by summing the weights of individual hive bodies and supers for each colony at each yard (add more about protocols for other assays).
+
+**Columns:** (from left to right) Field ID: Id including number location and treatment, Mass (biomass minus supers in lbs) Time (T1-T4), Origin (California and Local), Yard (1 or 2),Nosema (spores per bee) only two time steps (T1 and T3),Varroa (mites per 300 bees),Brood (frames of brood in colony),NosemaPA (binary data for nosema),VarroaPA (binary data for mites),
+Rows: Data points for all columns in order from each collection event
+
+**Missing values:** NA
+
+
+```{r}
+
+#Preliminaries:
+
+ls()
+rm(list=ls())
+
+# Set Working Directory 
+setwd("~/Desktop/QueenExperimentBurnham")
+
+# read in data for all three .csv files:
+QueensDF <- read.table("2016QueensHam.csv",header=TRUE,sep=",",stringsAsFactors=FALSE)
+
+VirusDF <- read.table("RNAVirus.csv",header=TRUE,sep=",",stringsAsFactors=FALSE)
+
+PollenDF <- read.table("PollenQueens.csv",header=TRUE,sep=",",stringsAsFactors=FALSE)
+
+```
+
+
+
+```{r}
+
+# looking at colony mass through time
+
+#subsetting by removing rows that have missing data:
+QueensMassDF <- QueensDF[-c(95,98,102,104,105),]
+
+# create summary and sd and se using plyr
+library(plyr)
+MassSummary <- ddply(QueensMassDF, c("Origin", "Time"), summarise, 
+                  n = length(Mass),
+                  mean = mean(Mass),
+                  sd = sd(Mass),
+                  se = sd / sqrt(n))
+
+print(MassSummary)
+
+```
+
+
+
+```{r}
+library(ggplot2)
+
+# remove generic time steps and add the correct days for correct time scale
+x <- MassSummary[,-2]
+times <- c(1,24,43,57,1,24,43,57)
+x <- data.frame(times, x)
+
+#Create plot in ggplot 
+plot <- ggplot(data = x, 
+               aes(x = times, 
+                   y = mean, 
+                   group = Origin, 
+                   colour = Origin)
+               ) + geom_line(size=1.5) + geom_point(size=4) + scale_colour_manual(values = c("dodgerblue4", "black")) + labs(x = "Time (days after requeening)", y = "Colony Mass (lbs)") + coord_cartesian(ylim = c(20, 70)) + geom_errorbar(aes(ymin = mean - se, ymax = mean + se, width = 0.9)) 
+
+# add a theme and add asterix for significance 
+plot + scale_fill_brewer(palette = "Paired") + theme_minimal(base_size = 17) + annotate(geom = "text", x = 24, y = 44, label = "*",cex = 8) + annotate(geom = "text", x = 57, y = 66, label = "*",cex = 8) 
+
+```
+
+
+
+
+```{r}
+
+#Check for normality and log transform
+#hist(QueensMassDF$Mass)
+#hist(log(QueensMassDF$Mass))
+
+#Subset data into 4 time steps (T1-T4)
+QMassT1 <- QueensMassDF[c(1:40),]
+QMassT2 <- QueensMassDF[c(41:75),]
+QMassT3 <- QueensMassDF[c(76:106),]
+QMassT4 <- QueensMassDF[c(107:132),]
+
+# run 4 t-tests comparing california to local colony mass
+ComparingQueensMassT1 <- aov(log(Mass)~Origin, data=QMassT1)
+ComparingQueensMassT2 <- aov(log(Mass)~Origin, data=QMassT2)
+ComparingQueensMassT3 <- aov(log(Mass)~Origin, data=QMassT3)
+ComparingQueensMassT4 <- aov(log(Mass)~Origin, data=QMassT4)
+
+# view the summary of the stats:
+summary(ComparingQueensMassT1)
+summary(ComparingQueensMassT2)
+summary(ComparingQueensMassT3)
+summary(ComparingQueensMassT4)
+
+```
+
+```{r}
+
+#subsetting by removing rows that have missing data:
+QueensNosemaDF <- QueensDF[-c(35,(41:75)),]
+
+times <- c(rep("T1",39),rep("T2",31),rep("T3",26))
+
+QueensNosemaDF <- data.frame(QueensNosemaDF, times)
+
+# create summary and sd and se using plyr
+library(plyr)
+NosemaSummary <- ddply(QueensNosemaDF, c("Origin", "NosemaDay"), summarise, 
+                     n = length(Nosema),
+                     mean = mean(Nosema),
+                     sd = sd(Nosema),
+                     se = sd / sqrt(n))
+
+print(NosemaSummary)
+```
+
+
+```{r}
+
+#Create plot in ggplot 
+plot <- ggplot(data = NosemaSummary, 
+               aes(x = NosemaDay, 
+                   y = mean, 
+                   group = Origin, 
+                   colour = Origin)
+) + geom_line(size=1.5) + geom_point(size=4) + scale_colour_manual(values = c("dodgerblue4", "black")) + labs(x = "Time (days after requeening)", y = "Nosmea Load (spores/bee)") + coord_cartesian(ylim = c(0, 5000000), xlim = c(0,60)) + geom_errorbar(aes(ymin = mean - se, ymax = mean + se, width = 0.9)) 
+
+# add a theme and add asterix for significance 
+plot + scale_fill_brewer(palette = "Paired") + theme_minimal(base_size = 17) + annotate(geom = "text", x = 34, y = 4500000, label = "*",cex = 8) + annotate(geom = "text", x = 55, y = 2850000, label = "*",cex = 8) 
+
+```
+
+```{r}
+# stats comparing treatemetns at each timepoint:
+
+#Check for normality and log transform
+#hist(QueensDF$Nosema)
+#hist(log(QueensDF$Nosema))
+
+#Subset data into 3 time steps (T1-T4)
+NosemaT1 <- QueensDF[c(1:40),]
+NosemaT2 <- QueensDF[c(78:106),]
+NosemaT3 <- QueensDF[c(107:132),]
+
+
+# run 3 t-tests comparing california to local colony mass
+ComparingQueensNosemaT1 <- aov(Nosema~Origin, data=NosemaT1)
+ComparingQueensNosemaT2 <- aov(Nosema~Origin, data=NosemaT2)
+ComparingQueensNosemaT3 <- aov(Nosema~Origin, data=NosemaT3)
+
+
+
+# checking residuals for T1 for normality 
+ComparingQueensNosemaT1.res = resid(ComparingQueensNosemaT1)
+
+NosemaT1 <- NosemaT1[-40,]
+
+#plot(log(NosemaT1$Nosema), ComparingQueensNosemaT1.res) 
+#abline(0, 0)          
+
+
+#store the summaries in some variables
+w <- summary(ComparingQueensNosemaT1) #Not sig
+x <- summary(ComparingQueensNosemaT2) #Sig
+y <- summary(ComparingQueensNosemaT3) #Sig
+
+```
+
+```{r}
+
+# create summary and sd and se using plyr for varroa
+# Remove rows containing NAs in column Varroa
+VarroaDF <- QueensDF[!is.na(QueensDF$Varroa),]
+
+VarroaSummary <- ddply(VarroaDF, c("Origin", "VarroaDay"), summarise, 
+                       n = length(Varroa),
+                       mean = mean(Varroa),
+                       sd = sd(Varroa),
+                       se = sd / sqrt(n))
+
+```
+
+```{r}
+#Create varroa line graph in ggplot 
+plot <- ggplot(data = VarroaSummary, 
+               aes(x = VarroaDay, 
+                   y = mean, 
+                   group = Origin, 
+                   colour = Origin)
+) + geom_line(size=1.5) + geom_point(size=4) + scale_colour_manual(values = c("dodgerblue4", "black")) + labs(x = "Time (days after requeening)", y = "Varroa Load (mites/300 bees)") + coord_cartesian(ylim = c(0, 12)) + geom_errorbar(aes(ymin = mean - se, ymax = mean + se, width = .8)) 
+
+# add a theme and add asterix for significance 
+plot + scale_fill_brewer(palette = "Paired") + theme_minimal(base_size = 17)  
+
+```
+
+```{r}
+# pollen work making a bargraph
+# read in data
+PollenDF <- read.table("PollenQueens.csv",header=TRUE,sep=",",stringsAsFactors=FALSE)
+
+PollenDF2 <- PollenDF[!is.na(PollenDF$Pollen),]
+
+PollenDF2$WeekChar <- as.character(PollenDF2$Week)
+
+PollenSummary <- ddply(PollenDF2, c("Origin", "WeekChar"), summarise, 
+                       n = length(Pollen),
+                       mean = mean(Pollen),
+                       sd = sd(Pollen),
+                       se = sd / sqrt(n))
+
+```
+
+
+```{r}
+colors <- c("dodgerblue4", "slategray3")
+
+plot2 <- ggplot(PollenSummary, aes(x=WeekChar, y=mean, fill=Origin)) + 
+  geom_bar(stat="identity", 
+           position=position_dodge()) +
+  geom_errorbar(aes(ymin=mean-se, ymax=mean+se), 
+                width=.4,
+                position=position_dodge(.9)) + labs(x="Time (weeks after requeening)", 
+                                                    y = "Pollen Weight (grams)")
+
+plot2 + theme_minimal(base_size = 17) + coord_cartesian(ylim = c(0, 40)) + scale_fill_manual(values=colors) + annotate(geom = "text", x = 5, y = 27, label = "*",cex = 6) 
+
+```
+
+
+```{r}
+# Brood line graph
+
+BroodDF <- PollenDF[!is.na(PollenDF$Brood),]
+
+BroodSummary <- ddply(BroodDF, c("Origin", "BroodDays"), summarise, 
+                       n = length(Brood),
+                       mean = mean(Brood),
+                       sd = sd(Brood),
+                       se = sd / sqrt(n))
+
+```
+
+
+```{r}
+plot <- ggplot(data = BroodSummary, 
+               aes(x = BroodDays, 
+                   y = mean, 
+                   group = Origin, 
+                   colour = Origin)
+) + geom_line(size=1.5) + geom_point(size=4) + scale_colour_manual(values = c("dodgerblue4", "black")) + labs(x = "Time (days after requeening)", y = "Frames of Brood/Hive") + coord_cartesian(ylim = c(2, 7)) + geom_errorbar(aes(ymin = mean - se, ymax = mean + se, width = 1)) 
+
+# add a theme and add asterix for significance 
+plot + scale_fill_brewer(palette = "Paired") + theme_minimal(base_size = 17) + annotate(geom = "text", x = 15, y = 5.2, label = "*",cex = 8) + annotate(geom = "text", x = 43, y = 6, label = "*",cex = 8) + annotate(geom = "text", x = 64, y = 6.7, label = "*",cex = 8) 
+
+```
+
+
+```{r}
+# split data frame and do t-tests between treatments and each time point
+x<-split(BroodDF, BroodDF$BroodDays)
+
+t.test(x$`15`$Brood~x$`15`$Origin)
+t.test(x$`27`$Brood~x$`27`$Origin)
+t.test(x$`43`$Brood~x$`43`$Origin)
+t.test(x$`64`$Brood~x$`64`$Origin)
+
+```
+
+
+```{r}
+
+#Virus stats:
+
+# read in data frame: 
+VirusDF <- read.table("RNAVirus.csv",header=TRUE,sep=",",stringsAsFactors=FALSE)
+
+VirusDF <- VirusDF[!is.na(VirusDF$Intensity),]
+
+Virus1 <- split(VirusDF,VirusDF$Virus)
+DWV <- Virus1$DWV
+IAPV <- Virus1$IAPV
+
+x <- split(DWV, DWV$Time)
+
+t.test(x$T2$Intensity~x$T2$Origin, alternative="greater")
+
+
+head(x$T2)
+
+x <- x$T2[-c(8),]
+x
+
+t.test(x$Intensity~x$Origin, alternative="greater")
+
+```
+
+
+```{r}
+
+VirusSummary <- ddply(DWV, c("Origin", "Time"), summarise, 
+                      n = length(Intensity),
+                      mean = mean(Intensity),
+                      sd = sd(Intensity),
+                      se = sd / sqrt(n))
+
+
+```
+
+```{r}
+#Plot Virus in ggplot
+
+colors <- c("dodgerblue4", "slategray3")
+
+plot1 <- ggplot(VirusSummary, aes(x=Time, y=mean, fill=Origin)) + 
+  geom_bar(stat="identity", 
+           position=position_dodge()) +
+  geom_errorbar(aes(ymin=mean-se, ymax=mean+se), 
+                width=.4,
+                position=position_dodge(.9)) + labs(x="Time (28 days apart)", 
+                                                    y = "DWV Volume (Int)")
+
+plot1 + theme_minimal(base_size = 17) + coord_cartesian(ylim = c(0, 4)) + scale_fill_manual(values=colors)
+
+
+```
+
+
+```{r}
+#IAPV
+VirusDF <- VirusDF[!is.na(VirusDF$Intensity),]
+
+Virus1 <- split(VirusDF,VirusDF$Virus)
+IAPV <- Virus1$IAPV
+
+z <- split(IAPV, IAPV$Time)
+
+t.test(z$T2$Intensity~z$T2$Origin)
+t.test(z$T1$Intensity~z$T1$Origin)
+
+VirusSummary1 <- ddply(IAPV, c("Origin", "Time"), summarise, 
+                      n = length(Intensity),
+                      mean = mean(Intensity),
+                      sd = sd(Intensity),
+                      se = sd / sqrt(n))
+
+
+```
+
+```{r}
+#Plot IAPV in ggplot
+
+
+plot2 <- ggplot(VirusSummary1, aes(x=Time, y=mean, fill=Origin)) + 
+  geom_bar(stat="identity", 
+           position=position_dodge()) +
+  geom_errorbar(aes(ymin=mean-se, ymax=mean+se), 
+                width=.4,
+                position=position_dodge(.9)) + labs(x="Time (28 days apart", 
+                                                    y = "IAPV Volume (Int)")
+
+plot2 + theme_minimal(base_size = 17) + coord_cartesian(ylim = c(0, 3)) + scale_fill_manual(values=colors) + annotate(geom = "text", x = 1, y = 2.3, label = "*",cex = 8) + annotate(geom = "text", x = 2, y = 3, label = "*",cex = 8) +scale_x_continuous(breaks = round(seq(min(dat$x), max(dat$x), by = 10),1))
+
+
+
+
+```
+
+
+```{r}
+
+
+library(lme4)
+
+glmer(formula = , data = )
+
+
+#------------------------------------------------------------------------
+# MASS
+
+# summary stats for plotting purposes:
+MassSummary <- ddply(QueenDF, c("Origin", "MassDay"), summarise, 
+                     n = length(Mass),
+                     mean = mean(Mass, na.rm = TRUE),
+                     sd = sd(Mass, na.rm = TRUE),
+                     se = sd / sqrt(n))
+
+# remove time steps with missing data:
+MassSummary <- MassSummary[-c(5,10),]
+print(MassSummary)
+
+
+
+#Create plot in ggplot for mass without x label:
+plot <- ggplot(data = MassSummary, 
+               aes(x = MassDay, 
+                   y = mean, 
+                   group = Origin)
+) + geom_point(size=3) + scale_colour_manual(values = c("black", "black")) + labs(x = NULL, y = "Colony Mass (lbs)", group="the") + coord_cartesian(ylim = c(20, 80), xlim = c(-5,70)) + geom_errorbar(aes(ymin = mean - se, ymax = mean + se, width = 0.9)) + geom_line(aes(linetype=Origin), size=1) + scale_fill_brewer(palette = "Paired") + theme_minimal(base_size = 17) + theme(legend.position=c(.15, .75), axis.title.y=element_text(margin=margin(0,20,0,0))) + scale_x_continuous(breaks=pretty_breaks(n=10)) + labs(linetype="Queen Origin") + annotate(geom = "text", x = 70, y = 75, label = "A",cex = 6) 
+
+#------------------------------------------------------------------------
+# BROOD
+
+# summary stats for plotting purposes:
+BroodSummary <- ddply(QueenDF, c("Origin", "BroodDay"), summarise, 
+                     n = length(Brood),
+                     mean = mean(Brood, na.rm = TRUE),
+                     sd = sd(Brood, na.rm = TRUE),
+                     se = sd / sqrt(n))
+print(BroodSummary)
+
+#Create plot in ggplot for brood 
+plot1 <- ggplot(data = BroodSummary, 
+               aes(x = BroodDay, 
+                   y = mean, 
+                   group = Origin)
+) + geom_point(size=3) + scale_colour_manual(values = c("black", "black")) + labs(x = "Time (days after requeening)", y = "Frames of Brood") + coord_cartesian(ylim = c(2, 7), xlim = c(-5,70)) + geom_errorbar(aes(ymin = mean - se, ymax = mean + se, width = 0.9)) + geom_line(aes(linetype=Origin), size=1) + scale_fill_brewer(palette = "Paired") + theme_minimal(base_size = 17) + theme(legend.position=c(3, 3), axis.title.y=element_text(margin=margin(0,20,0,0))) + scale_x_continuous(breaks=pretty_breaks(n=10)) + annotate(geom = "text", x = 70, y = 6.5, label = "B",cex = 6) 
+
+
+# use gridExtra package to combine the two figures:
+library(gridExtra)
+grid.newpage()
+grid.draw(rbind(ggplotGrob(plot), ggplotGrob(plot1), size = "last"))
+
+
+
+
+```
+

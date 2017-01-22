@@ -1,0 +1,409 @@
+---
+title: "Report on Figures and Data Analysis"
+author: "P. Alexander Burnham"
+date: "January 3, 2017"
+output: 
+  pdf_document: 
+    fig_crop: no
+    fig_height: 5
+    fig_width: 7
+---
+
+#Comparing colony productivity and pathogen infection between California-bred and New England-bred honey bees (Apis mellifera)
+
+**Metadata:**
+
+**Authors:** Andre J. Burnham, Fiona McLaughlin, P. Alexander Burnham & Herman Lehman
+
+**Date:** 10 August 2016
+
+**Data Set:** These data were collected in 2016 in New York state by Andre Burnham and the Hamilton College bee research team from two yards in NY owned by one beekeeper who volunteered for the study.
+
+**Data Source:** 2016 Hamilton Queen Origin Research Project
+
+**Funding Source:** Hamilton College undergraduate research grants
+
+**Data Collection:** Weights of colonies were obtained by summing the weights of individual hive bodies and supers for each colony at each yard (add more about protocols for other assays).
+
+**Columns:** (from left to right) FieldID: Id including number location and treatment, Time: Generic Time Steps (T1-T5), Origin (California and Local), Yard (1 or 2),Nosema (spores per bee) only three time steps,Varroa (mites per 300 bees),Brood (frames of brood in colony),NosemaPA (binary data for nosema),VarroaPA (binary data for mites),MassDay(days after requeening for mass),NosemaDay days after requeening for nosema),VarroaDay days after requeening for varroa),BroodDay days after requeening for brood),MassDate (dates sampled),NosemaDate(dates sampled),VarroaDate(dates sampled),BroodDate (dates sampled)
+
+**Rows:** Data points for all columns in order from each collection event
+
+**Missing values:** NA
+
+
+
+##SUMMARY
+###Background
+Honey bees (Apis mellifera) are global pollinators that have been on the decline due to various environmental and pathogen-related factors (vanEngelsdorp et al. 2009). However, recent studies have suggested that local environmental adaptations in A. mellifera phenotypes could be tied to colony productivity, survivability, and other fitness-related factors and thus hinder colony performance when migratory beekeeping practices are exercised (Costa et al. 2012, Buechler et al. 2014). The behavioral and morphological characteristics of these colony ecotypes are largely a result of genotypic variation in drones and the queen bee, a colony’s only reproducing female. In this study, we tested the null hypothesis that queen bee ecotypes from very contrasting climates produce offspring that are equally productive and resistant to pathogens when observed in the same geographical region. In particular, we compared queens grafted in Vermont with queens reared by one of the largest queen breeders in California. We conducted our experiment in Central New York, which we determined to be a fair representation of the Vermont bees’ local environment. 
+
+###Results
+We demonstrated that local colonies grew significantly more in total colony biomass than those of the Californian bees during specific time periods (T2, 7 July 2016; and T4, 9 August 2016). We also found that over five time periods (from 30 May 2016 to 3 August 2016), locally-raised bees reared significantly more brood than the Californian bees. However, no notable correlation with queen bee origin and mass of pollen collected was observed. In assessing resistance to parasites and pathogens, we found no significant difference over time in levels of the ectoparasite Varroa destructor. Using semi-quantitative PCR to evaluate the levels of deformed wing virus (DWV), black queen cell virus, (BQCV), and Israeli acute paralysis virus (IAPV) (three common RNA viruses in A. mellifera), we found that the levels of viral infection for BQCV and IAPV were unaffected after requeening the two groups with our experimental queens. However, our results demonstrated higher infection levels of DWV in CA colonies than in local colonies from T1 to T2 (15 June 16 and 13 July 2016). Levels of Nosema sp. (a microsporidian) in both the local and CA colony groups differed through three time periods. From T1 to T2 (16 June 2016 and 19 July 2016), Nosema spore loads significantly decreased in the local bees, while spore loads in the CA colonies increased. The third time period (9 August 2016) also showed significant decreases in local colony infection, while CA colonies continued to have high spore loads. 
+
+###Conclusion
+The significant differences we observed in colony weight and brood production between California-bred and northern-bred bees suggest that locally-bred A. mellifera have stronger nectar foraging and brood-rearing tendencies than their Californian counterparts. The lower Nosema sp. spore and DWV loads in the local colonies that we demonstrated strongly suggest that local bees are more resistant to certain pathogen strains and perhaps have heightened immune gene expression when compared with bees from another climate. To our knowledge, this is the first study to demonstrate significant differences in Nosema sp. infections between different A. mellifera ecotypes. Overall, our results present evidence that offspring of locally-raised queens from the Northeast have better adapted for survival and productivity in northern regions as compared to queens and worker bees from California, a climatically contrasting environment. These environmental adaptions relating to A. mellifera fitness could be tied to future colony survivability.
+
+
+
+
+```{r, message=FALSE}
+
+# Preliminaries:
+
+# Clear memory of characters:
+ls()
+rm(list=ls())
+
+# Set Working Directory: 
+setwd("~/Desktop/QueenExperimentBurnham")
+
+# Read in Data:
+QueenDF <- read.table("2016QueensHam.csv", header=TRUE, sep = ",", stringsAsFactors = FALSE) 
+
+
+
+# These dataframes are seperate becuase they do not follow that sampling 
+# pattern that the other four varaibles in the previous data frame do (i.e.5
+# time steps):
+PollenDF <- read.table("PollenQueens.csv", header=TRUE, sep = ",") 
+VirusDF <- read.table("RNAVirus.csv", header=TRUE, sep = ",") 
+
+# load plyr for data manipulation and ggplot plotting package and other 
+# related packages:
+library(plyr)
+library(ggplot2)
+library(grid)
+library(dplyr)
+library(scales)
+
+```
+
+
+## Colony Mass:
+```{r}
+QueenDF <- QueenDF[,c(1,2,3,5)]
+
+QueenDF <- QueenDF[which(complete.cases(QueenDF)),]
+
+QueenDF$Time <- as.factor(QueenDF$Time)
+QueenDF$Origin <- as.factor(QueenDF$Origin)
+QueenDF$FieldID <- as.factor(QueenDF$FieldID)
+
+head(QueenDF)
+ 
+
+table(QueenDF$Origin)
+sum(table(QueenDF$Time, QueenDF$Origin))
+
+library(ez)
+
+mod <- ezANOVA(QueenDF, 
+        dv=Mass,
+        wid=FieldID,
+        within_full = Time,
+        between = Origin,
+        detailed=TRUE,
+        return_aov = TRUE)
+
+
+# MASS - use repeated measures anova to look at differences between local 
+# and california through time:
+aov.out <- aov(Mass~Origin * Time + Error(FieldID), data=QueenDF)
+
+# look at summary of model:  SIGNIFICANT
+summary(aov.out)
+
+summary(mod$aov)
+
+```
+
+
+## Frames of Brood:
+```{r}
+
+# BROOD - use repeated measures anova to look at differences between local 
+# and california through time:  
+aov.out <- aov(Brood ~ Origin * Time + Error(FieldID), data=QueenDF)
+
+# look at summary of model: SIGNIFICANT
+summary(aov.out)
+
+```
+
+## Frames of Brood & Colony Mass Through Time by Queen Origin
+```{r, echo=FALSE}
+
+# MASS
+
+# summary stats for plotting purposes:
+MassSummary <- ddply(QueenDF, c("Origin", "MassDay"), summarise, 
+                     n = length(Mass),
+                     mean = mean(Mass, na.rm = TRUE),
+                     sd = sd(Mass, na.rm = TRUE),
+                     se = sd / sqrt(n))
+
+# remove time steps with missing data:
+MassSummary <- MassSummary[-c(5,10),]
+print(MassSummary)
+
+#------------------------------------------------------------------------
+
+#Create plot in ggplot for mass without x label:
+plot <- ggplot(data = MassSummary, 
+               aes(x = MassDay, 
+                   y = mean, 
+                   group = Origin)
+) + geom_point(size=3) + scale_colour_manual(values = c("black", "black")) + labs(x = NULL, y = "Colony Mass (lbs)", group="the") + coord_cartesian(ylim = c(20, 80), xlim = c(-10,70)) + geom_errorbar(aes(ymin = mean - se, ymax = mean + se, width = 0.9)) + geom_line(aes(linetype=Origin), size=1) + scale_fill_brewer(palette = "Paired") + theme_classic(base_size = 17) + theme(legend.position=c(.15, .75), panel.border = element_blank(), axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
+axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.text.x=element_blank(), axis.title.y=element_text(margin=margin(0,20,0,0))) + scale_x_continuous(breaks=pretty_breaks(n=10)) + labs(linetype="Queen Origin") + annotate(geom = "text", x = 70, y = 75, label = "(a)",cex = 6) 
+
+#------------------------------------------------------------------------
+# BROOD
+
+# summary stats for plotting purposes:
+BroodSummary <- ddply(QueenDF, c("Origin", "BroodDay"), summarise, 
+                     n = length(Brood),
+                     mean = mean(Brood, na.rm = TRUE),
+                     sd = sd(Brood, na.rm = TRUE),
+                     se = sd / sqrt(n))
+print(BroodSummary)
+
+#------------------------------------------------------------------------
+
+#Create plot in ggplot for brood 
+plot1 <- ggplot(data = BroodSummary, 
+               aes(x = BroodDay, 
+                   y = mean, 
+                   group = Origin)
+) + geom_point(size=3) + scale_colour_manual(values = c("black", "black")) + labs(x = "Time (days after requeening)", y = "Frames of Brood") + coord_cartesian(ylim = c(2, 7), xlim = c(-10,70)) + geom_errorbar(aes(ymin = mean - se, ymax = mean + se, width = 0.9)) + geom_line(aes(linetype=Origin), size=1) + scale_fill_brewer(palette = "Paired") + theme_classic(base_size = 17) + theme(legend.position=c(3, 3), panel.border = element_blank(), axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
+axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.title.y=element_text(margin=margin(0,20,0,0))) + scale_x_continuous(breaks=pretty_breaks(n=10)) + annotate(geom = "text", x = 70, y = 6.5, label = "(b)",cex = 6) 
+
+#------------------------------------------------------------------------
+
+# use gridExtra package to combine the two figures:
+library(gridExtra)
+grid.newpage()
+grid.draw(rbind(ggplotGrob(plot), ggplotGrob(plot1), size = "last"))
+
+```
+
+
+## Varroa:
+```{r}
+
+# VARROA - use repeated measures anova to look at differences between local
+# and california through time:  
+aov.out <- aov(Varroa ~ Origin * Time + Error(FieldID), data=QueenDF)
+
+# look at summary of model:  NOT SIGNIFICANT
+summary(aov.out)
+
+```
+
+## Varroa Mites through Time by Queen Origin
+```{r, echo=FALSE}
+
+# summary stats for plotting purposes:
+VarroaSummary <- ddply(QueenDF, c("Origin", "VarroaDay"), summarise, 
+                     n = length(Varroa),
+                     mean = mean(Varroa, na.rm = TRUE),
+                     sd = sd(Varroa, na.rm = TRUE),
+                     se = sd / sqrt(n))
+
+# remove time steps with missing data:
+VarroaSummary <- VarroaSummary[-c(5,10),]
+print(VarroaSummary)
+
+#------------------------------------------------------------------------
+
+ggplot(data = VarroaSummary, 
+               aes(x = VarroaDay, 
+                   y = mean, 
+                   group = Origin)
+) + geom_point(size=3) + scale_colour_manual(values = c("black", "black")) + labs(x = "Time (days after requeening)", y = "Varroa Load (mites/300 bees)") + coord_cartesian(ylim = c(0, 12), xlim = c(10,70)) + geom_errorbar(aes(ymin = mean - se, ymax = mean + se, width = 0.9)) + geom_line(aes(linetype=Origin), size=1) + scale_fill_brewer(palette = "Paired") + theme_classic(base_size = 17) + theme(legend.position=c(.85, .85), panel.border = element_blank(), axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
+axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + scale_x_continuous(breaks=pretty_breaks(n=5)) + labs(linetype="Queen Origin")
+
+
+```
+
+
+## Nosema:
+```{r}
+# NOSEMA - use repeated measures anova to look at differences between local
+# and california through time: 
+aov.out <- aov(Nosema ~ Origin * Time + Error(FieldID), data=QueenDF)
+
+# look at summary of model: SIGNIFICANT
+summary(aov.out)
+
+```
+
+## Nosema through Time by Queen Origin
+```{r, echo=FALSE}
+
+# summary stats for plotting purposes:
+NosemaSummary <- ddply(QueenDF, c("Origin", "NosemaDay"), summarise, 
+                     n = length(Nosema),
+                     mean = mean(Nosema, na.rm = TRUE),
+                     sd = sd(Nosema, na.rm = TRUE),
+                     se = sd / sqrt(n))
+
+# remove time steps with missing data:
+NosemaSummary <- NosemaSummary[-c(4,8),]
+print(NosemaSummary)
+
+#------------------------------------------------------------------------
+
+ggplot(data = NosemaSummary, 
+               aes(x = NosemaDay, 
+                   y = mean, 
+                   group = Origin)
+) + geom_point(size=3) + scale_colour_manual(values = c("black", "black")) + labs(x = "Time (days after requeening)", y = "Nosema Load (spores/bee)") + coord_cartesian(ylim = c(0, 4300000), xlim = c(10,70)) + geom_errorbar(aes(ymin = mean - se, ymax = mean + se, width = 0.9)) + geom_line(aes(linetype=Origin), size=1) + scale_fill_brewer(palette = "Paired") + theme_classic(base_size = 17) + theme(legend.position=c(.15, .85), panel.border = element_blank(), axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
+axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + scale_x_continuous(breaks=pretty_breaks(n=5)) + labs(linetype="Queen Origin") 
+```
+
+## Nosema through Time by Queen Origin (bar plot)
+```{r, echo=FALSE}
+# summary stats for plotting purposes:
+NosemaSummary <- ddply(QueenDF, c("Origin", "NosemaDay"), summarise, 
+                     n = length(Nosema),
+                     mean = mean(Nosema, na.rm = TRUE),
+                     sd = sd(Nosema, na.rm = TRUE),
+                     se = sd / sqrt(n))
+
+# remove time steps with missing data:
+NosemaSummary <- NosemaSummary[-c(4,8),]
+NosemaSummary$NosemaDay <- as.character(NosemaSummary$NosemaDay)
+print(NosemaSummary)
+
+colors <- c("white", "gray32")
+
+ggplot(NosemaSummary, aes(x=NosemaDay, y=mean, fill=Origin)) + 
+  geom_bar(stat="identity", col="black",  
+           position=position_dodge()) +
+  geom_errorbar(aes(ymin=mean-se, ymax=mean+se), 
+                width=.4,
+                position=position_dodge(.9)) + labs(x="Time (days after requeening)", y = "Nosema Load (spores/bee)") + theme_classic(base_size = 17) + coord_cartesian(ylim = c(0, 4300000)) + scale_fill_manual(values=colors, name="Queen Origin", labels=c("California", "Local")) + theme(legend.position=c(.8, .85), panel.border = element_blank(), axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
+axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
+
+```
+
+## Pollen:
+```{r}
+
+# Pollen - use repeated measures anova to look at differences between local 
+# and california through time:  
+aov.out <- aov(Pollen ~ Origin * Week + Error(ID), data=PollenDF)
+
+# look at summary of model: NOT SIGNIFICANT
+summary(aov.out)
+```
+
+## Weekely Pollen Weight by Queen Origin
+```{r, echo=FALSE}
+# summary stats for plotting purposes:
+PollenSummary <- ddply(PollenDF, c("Origin", "Week"), summarise, 
+                     n = length(Pollen),
+                     mean = mean(Pollen, na.rm = TRUE),
+                     sd = sd(Pollen, na.rm = TRUE),
+                     se = sd / sqrt(n))
+print(PollenSummary)
+
+#------------------------------------------------------------------------
+
+ggplot(data = PollenSummary, 
+               aes(x = Week, 
+                   y = mean, 
+                   group = Origin)
+) + geom_point(size=3) + scale_colour_manual(values = c("black", "black")) + labs(x = "Time (weeks after requeening)", y = "Pollen Mass (grams)") + coord_cartesian(ylim = c(0, 40), xlim = c(1,9)) + geom_errorbar(aes(ymin = mean - se, ymax = mean + se, width = 0.1)) + geom_line(aes(linetype=Origin), size=1) + scale_fill_brewer(palette = "Paired") + theme_classic(base_size = 17) + theme(legend.position=c(.2, .85), panel.border = element_blank(), axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
+axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + scale_x_continuous(breaks=pretty_breaks(n=9)) + labs(linetype="Queen Origin")
+
+
+```
+
+##Viruses
+```{r}
+# split virus DF by virus for stats:
+VirusDF$IntensityMult <- VirusDF$Band_Intensity*10^6
+VirusDFsplit <- split(VirusDF, VirusDF$Virus)
+
+#------------------------------------------------------------------------
+# DWV - use repeated measures anova to look at differences between local 
+# and california through time:  
+aov.out <- aov(IntensityMult ~ Origin * Time + Error(ID), data=VirusDFsplit$DWV)
+
+# look at summary of model: NOT SIGNIFICANT
+summary(aov.out)
+
+#------------------------------------------------------------------------
+# BQCV - use repeated measures anova to look at differences between local 
+# and california through time:  
+aov.out <- aov(IntensityMult ~ Origin * Time + Error(ID), data=VirusDFsplit$BQCV)
+
+# look at summary of model: NOT SIGNIFICANT
+summary(aov.out)
+
+#------------------------------------------------------------------------
+# IAPV - use repeated measures anova to look at differences between local 
+# and california through time:  
+aov.out <- aov(IntensityMult ~ Origin * Time + Error(ID), data=VirusDFsplit$IAPV)
+
+# look at summary of model: SIGNIFICANT
+summary(aov.out)
+```
+
+
+## Viral Load by Virus type at two time points for by queen origin
+```{r, echo=FALSE}
+
+
+# summary stats for plotting purposes:
+VirusSummary <- ddply(VirusDF, c("Origin", "Virus", "Time"), summarise, 
+                     n = length(IntensityMult),
+                     mean = mean(IntensityMult, na.rm = TRUE),
+                     sd = sd(IntensityMult, na.rm = TRUE),
+                     se = sd / sqrt(n))
+
+# split data frame by virus type:
+splitVir <- split(VirusSummary, VirusSummary$Virus)
+
+
+#------------------------------------------------------------------------
+#DWV
+
+colors <- c("white", "gray32")
+
+p1 <- ggplot(splitVir$DWV, aes(x=Time, y=mean, fill=Origin)) + 
+  geom_bar(stat="identity", col="black",  
+           position=position_dodge()) +
+  geom_errorbar(aes(ymin=mean-se, ymax=mean+se), 
+                width=.4,
+                position=position_dodge(.9)) + labs(x="DWV", y = "Viral Load (band intensity)") + theme_classic(base_size = 17) + coord_cartesian(ylim = c(0, 4000000)) + scale_fill_manual(values=colors, name="Queen Origin", labels=c("California", "Local")) + theme(legend.position=c(3, 3), panel.border = element_blank(),
+axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
+
+#------------------------------------------------------------------------
+#BQCV
+
+p2 <- ggplot(splitVir$BQCV, aes(x=Time, y=mean, fill=Origin)) + 
+  geom_bar(stat="identity", col="black",  
+           position=position_dodge()) +
+  geom_errorbar(aes(ymin=mean-se, ymax=mean+se), 
+                width=.4,
+                position=position_dodge(.9)) + labs(x="BQCV", y = NULL) + theme_classic(base_size = 17) + coord_cartesian(ylim = c(0, 4000000)) + scale_fill_manual(values=colors, name="Queen Origin", labels=c("California", "Local")) + theme(legend.position=c(3, 3),axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),  panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + annotate(geom = "text", x = 1.5, y = 3900000, label = "***",cex = 6) + annotate("segment", x = 1, xend = 2, y = 3800000, yend = 3800000) + annotate("segment", x = 1, xend = 1, y = 3800000, yend = 1500000) + annotate("segment", x = 2, xend = 2, y = 3800000, yend = 3500000)
+
+#------------------------------------------------------------------------
+#IAPV
+
+p3 <- ggplot(splitVir$IAPV, aes(x=Time, y=mean, fill=Origin)) + 
+  geom_bar(stat="identity", col="black",  
+           position=position_dodge()) +
+  geom_errorbar(aes(ymin=mean-se, ymax=mean+se), 
+                width=.4,
+                position=position_dodge(.9)) + labs(x="IAPV", y = NULL) + theme_classic(base_size = 17) + coord_cartesian(ylim = c(0, 4000000)) + scale_fill_manual(values=colors, name="Queen Origin", labels=c("California", "Local")) + theme(legend.position=c(.5, .9),axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),  panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + annotate(geom = "text", x = 0.78, y = 2350000, label = "A",cex = 4) + annotate(geom = "text", x = 1.23, y = 1200000, label = "B",cex = 4) + annotate(geom = "text", x = 1.78, y = 3050000, label = "A",cex = 4) + annotate(geom = "text", x = 2.23, y = 1600000, label = "B",cex = 4) 
+
+# merge figures into 1 side by side figure:
+grid.newpage()
+grid.draw(cbind(ggplotGrob(p1), ggplotGrob(p2), ggplotGrob(p3), size = "last"))
+```
+

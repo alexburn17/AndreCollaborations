@@ -1,0 +1,24 @@
+---
+title: "RMKDWN_With Github"
+author: "P. Alexander Burnham"
+date: "September 14, 2016"
+output: 
+  html_document: 
+    theme: cerulean
+---
+
+#Stufff
+
+1. hi
+
+2. bye
+
+3. try
+
+```{r setup, include=FALSE}
+
+rnorm(0,1)
+
+
+```
+
