@@ -1,0 +1,251 @@
+# Author: P. Alexander Burnham
+# Date: 26 March 2016
+#
+# Data Set: These data are Nosema counts and presence/absence data for 350 2014 Bombus survey bees. Included are %sucrose crop readings, species IDs, Caste IDs, proximity to apis meliffera and host plant.  
+# Data Source: These data are my own property 
+# Funding Source: APLE grant, and NSF (Alger)
+#
+# Data Collection: Bees were collected during the 2014 field season at 13 different sites in Northern Vermont (for coords see Nosema GIS) Ran vegitation and bee abundance transects, caught bombus and HB were possible. Collected flowering plants and ID'd host plant for captured bombus. Bees were dissected in 2015/2016. Ventriculi were homgenized in GITC buffer (ready for RT-qPCR work in future) and spore counts were done with a hemocytometer (2 counts 1 mean). Percent sucrose in crop was measured where possible (refractometer).
+# Columns: FieldID,	LabID,	Site (code),	Caste (ID), 	Species (ID),	Nosema Chamber 1 (count 1),	Nosema Chamber 2 (count 2),	NosemaPA (presence absence of parasite (binary)),	NosemaAverage (mean of ch. 1 and ch. 2), 	Sucrose (% sucrose in crop),	Date, HB Proximity(near/far)
+# Rows: Data points for all columns in order of lab ID
+# Missing values: NA 
+LabID,FieldID,Site,Caste ,Species,Chamber1,Chamber2,NosemaPA,NosemaAverage ,Sucrose,Date,hbPA
+1,Robin-19,Robin,Worker,Tern.,0,3,1,1.5,NA,8.2,Near
+2,100-4,100,Worker,Tern.,0,0,0,0,NA,8.22,Near
+3,OVC-2,OVC,Worker,Vag.,0,0,0,0,NA,8.1,Far
+4,OVC-22,OVC,Worker,Imp.,0,0,0,0,NA,8.1,Far
+5,Robin-11,Robin,Worker,Tern.,7,5,1,6,NA,8.2,Near
+6,OVC-7,OVC,Worker,Vag.,0,0,0,0,33,8.1,Far
+7,100-8,100,Worker,Imp.,0,0,0,0,NA,8.22,Near
+8,Robin-7,Robin,Worker,Tern.,0,0,0,0,NA,8.2,Near
+9,Robin-13,Robin,Worker,Tern.,0,0,0,0,NA,8.2,Near
+10,GMC-20,GMC,Worker,Imp.,0,0,0,0,NA,8.2,Far
+11,GMC-21,GMC,Worker,Tern.,0,0,0,0,NA,8.2,Far
+12,OVC-16,OVC,Worker,Imp.,0,0,0,0,NA,8.1,Far
+13,GMC-7,GMC,Male,Bimac.,0,0,1,0,38.5,8.2,Far
+14,GMC-5,GMC,Male,Bimac.,0,0,0,0,NA,8.2,Far
+15,100-18,100,Worker,Imp.,0,0,0,0,44.5,8.22,Near
+16,100-14,100,Worker,Imp.,0,0,1,0,NA,8.22,Near
+17,100-16,100,Worker,Imp.,2,4,1,3,40,8.22,Near
+18,GMC-3,GMC,Male,Bimac.,1,1,1,1,41.5,8.2,Far
+19,OVC-17,OVC,Worker,Vag.,1,2,1,1.5,NA,8.1,Far
+20,Robin-16,Robin,Worker,Tern.,0,0,0,0,NA,8.2,Near
+21,100-6,100,Worker,Imp.,1,3,1,2,NA,8.22,Near
+22,100-9,100,Worker,Imp.,45,49,1,47,NA,8.22,Near
+23,100-1,100,Worker,Imp.,0,0,1,0,NA,8.22,Near
+24,Robin-1,Robin,Worker,Tern.,0,0,0,0,50,8.2,Near
+25,OVC-10,OVC,Worker,Vag.,0,0,0,0,NA,8.1,Far
+26,Robin-18,Robin,Worker,Tern.,0,1,1,0.5,NA,8.2,Near
+27,Robin-5,Robin,Worker,Tern.,0,0,0,0,NA,8.2,Near
+28,OVC-?,OVC,Worker,Vag.,0,0,0,0,NA,8.1,Far
+29,Robin-2,Robin,Worker,Vag.,0,0,0,0,NA,8.2,Near
+30,GMC-15,GMC,Male,Bimac.,0,0,0,0,NA,8.2,Far
+31,Robin-6,Robin,Worker,Tern.,0,0,0,0,NA,8.2,Near
+32,Robin-8,Robin,Worker,Tern.,0,0,0,0,NA,8.2,Near
+33,100-7,100,Male,Imp.,0,0,1,0,NA,8.22,Near
+34,NORD-5,NORD,Worker,Imp.,0,0,0,0,30.5,7.3,Near
+35,NORD-7,NORD,Worker,Imp.,1,1,1,1,NA,7.3,Near
+36,OVC-20,OVC,Worker,Tern.,0,0,1,0,NA,8.1,Far
+37,100-17,100,Worker,Imp.,0,0,0,0,NA,8.22,Near
+38,Robin-17,Robin,Worker,Tern.,0,0,0,0,NA,8.2,Near
+39,NORD-11,NORD,Worker,Gris. ,0,0,0,0,35,7.3,Near
+40,Robin-4,Robin,Worker,Tern.,0,0,0,0,NA,8.2,Near
+41,100-20,100,Worker,Imp.,0,0,0,0,NA,8.22,Near
+42,NORD-6,NORD,Worker,Imp.,0,0,0,0,NA,7.3,Near
+43,NORD-8,NORD,Male,Tern.,0,0,0,0,NA,7.3,Near
+44,OVC-19,OVC,Worker,Imp.,0,0,0,0,NA,8.1,Far
+45,NORD-2,NORD,Worker,Imp.,1,0,1,0.5,38,7.3,Near
+46,GMC-13,GMC,Worker,Tern.,2,2,1,2,52,8.2,Far
+47,Robin-21,Robin,Worker,Tern.,0,0,0,0,NA,8.2,Near
+48,OVC-9,OVC,Male,Bimac.,49,64,1,56.5,NA,8.1,Far
+49,NORD-19,NORD,Worker,Bor.,1,0,1,0.5,43,7.3,Near
+50,NORD-22,NORD,Male,Bor.,0,0,0,0,41,7.3,Near
+51,OVC-18,OVC,Worker,Imp.,0,0,0,0,38,8.1,Far
+52,PC-9,PC,Worker,Vag.,42,48,1,45,NA,8.12,Far
+53,NORD-10,NORD,Worker,Imp.,0,0,0,0,NA,7.3,Near
+54,NORD-4,NORD,Worker,Imp.,0,0,0,0,35,7.3,Near
+55,NORD-23,NORD,Male,Bor.,0,0,0,0,NA,7.3,Near
+56,OVC-6,OVC,Worker,Vag.,0,0,0,0,NA,8.1,Far
+57,GMC-?,GMC,Worker,Imp.,0,0,0,0,NA,8.2,Far
+58,NORD-1,NORD,Worker,Imp.,0,0,0,0,48,7.3,Near
+59,100-2,100,Worker,Imp.,0,0,0,0,NA,8.22,Near
+60,Robin-15,Robin,Worker,Tern.,0,0,0,0,NA,8.2,Near
+61,NORD-21,NORD,Worker,Ferv. ,0,0,0,0,53.5,7.3,Near
+62,100-5,100,Worker,Imp.,0,0,0,0,NA,8.22,Near
+63,100-11,100,Worker,Imp.,0,0,0,0,36,8.22,Near
+64,GMC-8,GMC,Male,Bimac.,0,0,0,0,NA,8.2,Far
+65,100-22,100,Male,Imp.,0,0,0,0,NA,8.22,Near
+66,NORD-20,NORD,Male,Bor.,1,1,1,1,NA,7.3,Near
+67,Robin-14,Robin,Worker,Tern.,0,0,0,0,NA,8.2,Near
+68,Robin-12,Robin,Worker,Tern.,1,4,1,2.5,NA,8.2,Near
+69,GMC-?-2,GMC,Male,Imp.,0,0,0,0,NA,8.2,Far
+70,NORD-17,NORD,Worker,Bor.,0,0,0,0,NA,7.3,Near
+71,NORD-18,NORD,Male,Bor.,0,0,0,0,45,7.3,Near
+72,OVC-11,OVC,Worker,Tern.,0,0,0,0,NA,8.1,Far
+73,GMC-4,GMC,Male,Bimac.,0,0,0,0,NA,8.2,Far
+74,OVC-8,OVC,Worker,Tern.,0,0,1,0,NA,8.1,Far
+75,NORD-15,NORD,Male,Bor.,0,0,0,0,NA,7.3,Near
+76,100-13,100,Worker,Tern.,0,0,0,0,NA,8.22,Near
+77,NORD-12,NORD,Worker,Vag.,0,0,0,0,NA,7.3,Near
+78,100-19,100,Worker,Imp.,49,85,1,67,NA,8.22,Near
+79,NORD-3,NORD,Worker,Imp.,0,0,0,0,48,7.3,Near
+80,NORD-14,NORD,Male,Bor.,0,0,0,0,NA,7.3,Near
+81,NORD-16,NORD,Worker,Bor.,0,0,0,0,NA,7.3,Near
+82,NORD-13,NORD,Worker,Imp.,0,0,0,0,NA,7.3,Near
+83,100-3,100,Worker,Imp.,0,0,0,0,NA,8.22,Near
+84,GMC-16,GMC,Worker,Tern.,0,0,0,0,NA,8.2,Far
+85,100-2,100,Queen ,Bor.,0,0,0,0,NA,6.8,Near
+86,100-5,100,Queen ,Tern.,0,0,1,0,NA,6.8,Near
+87,100-6,100,Queen ,Imp.,0,0,0,0,NA,6.8,Near
+88,PVC-2,PVC,Queen ,Imp.,0,0,0,0,NA,6.7,Far
+89,100-1,100,Queen ,Bor.,0,3,1,1.5,68,6.8,Near
+90,PVC-3,PVC,Queen ,Imp.,0,0,0,0,NA,6.7,Far
+91,100-12,100,Queen ,Imp.,0,0,0,0,NA,6.8,Near
+92,PVC-13,PVC,Queen ,Imp.,0,0,0,0,NA,6.7,Far
+93,100-15,100,Queen ,Imp.,0,0,0,0,NA,6.8,Near
+94,PVC-4,PVC,Queen ,Imp.,0,0,0,0,NA,6.7,Far
+95,100-8,100,Queen ,Imp.,0,0,0,0,NA,6.8,Near
+96,PVC-6,PVC,Queen ,Tern.,1,5,1,3,67,6.7,Far
+97,PVC-10,PVC,Queen ,Tern.,1,1,1,1,NA,6.7,Far
+98,GMC-9,GMC,Queen ,Tern.,0,0,0,0,NA,6.5,Far
+99,PVC-8,PVC,Queen ,Imp.,0,0,0,0,NA,6.7,Far
+100,GMC-3,GMC,Queen ,Vag.,0,0,0,0,NA,6.5,Far
+101,100-10,100,Queen ,Imp.,0,0,0,0,NA,6.8,Near
+102,PVC-7,PVC,Queen ,Imp.,0,0,0,0,NA,6.7,Far
+103,100-4,100,Queen ,Bor.,1,0,1,0.5,NA,6.8,Near
+104,GMC-8,GMC,Queen ,Bimac.,0,0,0,0,NA,6.5,Far
+105,PVC-9,PVC,Queen ,Tern.,0,0,1,0,NA,6.7,Far
+106,GMC-8-2,GMC,Queen ,Imp.,2,0,1,1,24.5,6.5,Far
+107,GMC-4,GMC,Queen ,Vag.,0,0,0,0,NA,6.5,Far
+108,100-13,100,Queen ,Imp.,0,0,0,0,NA,6.8,Near
+109,GMC-1,GMC,Queen ,Imp.,0,0,1,0,NA,6.5,Far
+110,GMC-10,GMC,Queen ,Tern.,1,0,1,0.5,NA,6.5,Far
+111,GMC-3,GMC,Queen ,Imp.,0,0,0,0,NA,6.5,Far
+112,GMC-6,GMC,Queen ,Tern.,0,0,0,0,NA,6.5,Far
+113,GMC-2,GMC,Queen ,Vag.,0,0,0,0,NA,6.5,Far
+114,PC-7,PC,Queen ,Bimac.,0,0,0,0,NA,8.12,Far
+115,PC-1,PC,Queen ,Imp.,0,0,0,0,NA,8.6,Far
+116,WWC-13,WWC,Queen ,Bor.,0,0,0,0,NA,6.8,Far
+117,PC-6,PC,Queen ,Imp.,0,0,0,0,NA,8.12,Far
+118,PC-4,PC,Queen ,Bimac.,0,0,0,0,NA,8.12,Far
+119,WWC-9,WWC,Queen ,Tern.,0,0,0,0,NA,6.8,Far
+120,PC-5,PC,Queen ,Bimac.,0,0,1,0,NA,8.12,Far
+121,WWC-3,WWC,Queen ,Tern.,0,0,0,0,NA,6.8,Far
+122,LOW-3,LOW,Queen ,Vag.,0,0,0,0,46,6.8,Far
+123,PVC-12,PVC,Queen ,Bimac.,0,0,0,0,NA,6.7,Far
+124,PVC-8,PVC,Queen ,Imp.,0,0,0,0,NA,6.7,Far
+125,PVC-5,PVC,Queen ,Imp.,0,0,0,0,56,6.7,Far
+126,100-9,100,Queen ,Imp.,0,0,0,0,NA,6.8,Near
+127,WWC-7,WWC,Queen ,Tern.,0,0,0,0,NA,6.8,Far
+128,100-7,100,Queen ,Bimac.,0,0,0,0,NA,6.8,Near
+129,100-11,100,Queen ,Imp.,0,0,0,0,NA,6.8,Near
+130,PVC-1,PVC,Queen ,Imp.,2,1,1,1.5,46,6.7,Far
+131,100-14,100,Queen ,Imp.,0,0,0,0,NA,6.8,Near
+132,100-3,100,Queen ,Bor.,1,0,1,0.5,NA,6.8,Near
+133,PVC-11,PVC,Worker,Bimac.,0,0,0,0,NA,6.7,Far
+134,CBF-?,CBF,Queen ,Imp.,0,0,0,0,NA,6.14,Near
+135,DanG-13,DanG,Queen ,Imp.,1,0,1,0.5,47,6.17,Near
+136,GMC-6,GMC,Queen ,Imp.,0,4,1,2,NA,6.5,Far
+137,CBF-8,CBF,Queen ,Imp.,0,1,1,0.5,NA,6.14,Near
+138,CBF-5,CBF,Queen ,Imp.,0,0,1,0,19,6.14,Near
+139,CBF-3,CBF,Queen ,Imp.,0,0,0,0,NA,6.14,Near
+140,AMY-6,AMY,Queen ,Vag.,0,0,0,0,NA,6.17,Near
+141,CBF-6,CBF,Queen ,Imp.,0,0,0,0,NA,6.14,Near
+142,CBF-1,CBF,Queen ,Imp.,0,0,0,0,NA,6.14,Near
+143,AMY-8,AMY,Queen ,Tern.,0,2,0,1,NA,6.17,Near
+144,AMY-7,AMY,Worker,Tern.,0,0,1,0,NA,6.17,Near
+145,AMY-9,AMY,Worker,Tern.,0,0,0,0,25,6.17,Near
+146,GMC-9,GMC,Queen ,Imp.,3,5,1,4,NA,6.5,Far
+147,CBF-7,CBF,Queen ,Imp.,2,10,1,6,NA,6.14,Near
+148,GMC-8,GMC,Worker,Bimac.,0,0,0,0,NA,6.5,Far
+149,GMC-1,GMC,Queen ,Vag.,0,0,0,0,NA,6.5,Far
+150,GMC-9,GMC,Worker,Bimac.,0,0,0,0,55,6.5,Far
+151,AMY-10,AMY,Queen ,Vag.,0,0,0,0,NA,6.17,Near
+152,CBF-9,CBF,Queen ,Imp.,0,0,0,0,NA,6.14,Near
+153,DanG-3,DanG,Queen ,Imp.,0,0,0,0,NA,6.17,Near
+154,AMY-3,AMY,Worker,Tern.,0,0,0,0,NA,6.17,Near
+155,AMY-2,AMY,Queen ,Tern.,0,0,0,0,NA,6.17,Near
+156,AMY-4,AMY,Queen ,Vag.,0,0,0,0,NA,6.17,Near
+157,GMC-5,GMC,Queen ,Tern.,0,0,0,0,NA,6.5,Far
+158,DanG-12,DanG,Queen ,Imp.,0,0,0,0,39,6.17,Near
+159,DanG-11,DanG,Queen ,Imp.,0,0,0,0,NA,6.17,Near
+160,GMC-4,GMC,Queen ,Bimac.,0,0,0,0,32,6.5,Far
+161,PEL-4,PEL,Queen ,Imp.,0,0,0,0,NA,6.11,Near
+162,LOW-1,LOW,Queen ,Vag.,0,0,0,0,NA,6.8,Far
+163,LOW-10,LOW,Queen ,Tern.,0,0,1,0,29,6.8,Far
+164,PEL-6,PEL,Queen ,Imp.,0,0,0,0,35,6.11,Near
+165,LOW-13,LOW,Queen ,Bor.,0,0,0,0,NA,6.8,Far
+166,LOW-4,LOW,Queen ,Bor.,0,0,0,0,NA,6.8,Far
+167,LOW-8,LOW,Queen ,Tern.,0,0,0,0,NA,6.8,Far
+168,LOW-3,LOW,Queen ,Gris. ,58,67,1,62.5,51,6.8,Far
+169,LOW-6,LOW,Queen ,Vag.,0,0,0,0,NA,6.8,Far
+170,LOW-7,LOW,Worker,Tern.,0,0,0,0,NA,6.8,Far
+171,LOW-12,LOW,Queen ,Tern.,0,0,0,0,NA,6.8,Far
+172,LOW-5,LOW,Queen ,Vag.,0,0,0,0,NA,6.8,Far
+173,LOW-11,LOW,Queen ,Vag.,0,0,0,0,40,6.8,Far
+174,PEL-9,PEL,Queen ,Bimac.,0,0,0,0,NA,6.11,Near
+175,LOW-9,LOW,Queen ,Vag.,0,0,0,0,NA,6.8,Far
+176,PEL-3,PEL,Queen ,Imp.,0,0,0,0,25,6.11,Near
+177,LOW-2,LOW,Queen ,Gris. ,0,0,0,0,53,6.8,Far
+178,PEL-7,PEL,Queen ,Imp.,0,0,0,0,NA,6.11,Near
+179,PEL-10,PEL,Queen ,Imp.,0,0,0,0,NA,6.11,Near
+180,AMY-1,AMY,Worker,Tern.,0,0,0,0,40,6.17,Near
+181,GMC-7,GMC,Queen ,Imp.,0,0,0,0,NA,6.5,Far
+182,AMY-5,AMY,Queen ,Imp.,0,0,0,0,NA,6.17,Near
+183,PEL-5,PEL,Queen ,Imp.,0,0,0,0,NA,6.11,Near
+184,PEL-1,PEL,Queen ,Imp.,0,0,0,0,NA,6.11,Near
+185,CBF-4,CBF,Queen ,Imp.,1,0,1,0.5,NA,6.14,Near
+186,CBF-2,CBF,Queen ,Imp.,0,0,0,0,NA,6.14,Near
+187,LOW-14,LOW,Queen ,Tern.,0,0,0,0,35,6.8,Far
+188,LIB-2,LIB,Worker,Vag.,0,0,0,0,NA,6.27,Near
+189,LIB-6,LIB,Worker,Tern.,0,0,0,0,NA,6.27,Near
+190,LIB-10,LIB,Worker,Vag.,0,0,0,0,NA,6.27,Near
+191,LIB-7,LIB,Worker,Imp.,0,0,0,0,31,6.27,Near
+192,LIB-9,LIB,Worker,Vag.,0,0,0,0,NA,6.27,Near
+193,LIB-5,LIB,Worker,Imp.,0,0,1,0,NA,6.27,Near
+194,LIB-8,LIB,Worker,Imp.,0,0,0,0,NA,6.27,Near
+195,LIB-1,LIB,Worker,Vag.,0,0,0,0,25,6.27,Near
+196,LIB-3,LIB,Worker,Vag.,0,0,0,0,30,6.27,Near
+197,LIB-4,LIB,Worker,Vag.,0,0,0,0,NA,6.27,Near
+198,OVC-9,OVC,Queen ,Imp.,1,2,1,1.5,NA,6.4,Far
+199,OVC-4,OVC,Queen ,Imp.,0,0,0,0,NA,6.4,Far
+200,OVC-11,OVC,Queen ,Bimac.,6,4,1,5,NA,6.4,Far
+201,OVC-5,OVC,Queen ,Bimac.,0,0,0,0,NA,6.4,Far
+202,OVC-1,OVC,Queen ,Vag.,0,0,0,0,NA,6.4,Far
+203,OVC-13,OVC,Queen ,Tern.,0,0,0,0,NA,6.4,Far
+204,OVC-10,OVC,Queen ,Imp.,0,0,0,0,NA,6.4,Far
+205,OVC-7,OVC,Queen ,Vag.,16,2,1,9,Re-do count,6.4,Far
+206,OVC-12,OVC,Worker,Imp.,0,2,1,1,NA,6.4,Far
+207,OVC-2,OVC,Queen ,Gris. ,0,0,0,0,NA,6.4,Far
+208,OVC-6,OVC,Queen ,Bimac.,0,0,0,0,NA,6.4,Far
+209,OVC-3,OVC,Queen ,Bimac.,4,2,1,3,NA,6.4,Far
+210,OVC-8,OVC,Queen ,Vag.,0,0,0,0,NA,6.4,Far
+211,DanG-9,DanG,Worker,Imp.,0,0,0,0,NA,7.3,Near
+212,DanG-18,DanG,Worker,Imp.,0,0,0,0,NA,7.3,Near
+213,DanG-10,DanG,Worker,Imp.,2,1,1,1.5,32,7.3,Near
+214,DanG-5,DanG,Worker,Imp.,0,0,0,0,NA,7.3,Near
+215,DanG-12,DanG,Worker,Imp.,0,0,0,0,NA,7.3,Near
+216,DanG-23,DanG,Worker,Imp.,0,0,0,0,NA,7.3,Near
+217,DanG-21,DanG,Worker,Imp.,0,0,0,0,NA,7.3,Near
+218,DanG-22,DanG,Worker,Imp.,0,0,0,0,NA,7.3,Near
+219,DanG-17,DanG,Worker,Imp.,0,0,0,0,NA,7.3,Near
+220,DanG-2,DanG,Worker,Imp.,0,0,0,0,NA,7.3,Near
+221,PC-19,PC,Worker,Vag.,1050,1126,1,1088,40.5,8.12,Far
+222,PC-11,PC,Worker,Imp.,0,0,0,0,NA,8.12,Far
+223,Town-2,Town,Worker,Imp.,0,0,0,0,NA,8.12,Near
+224,PC-17,PC,Worker,Imp.,0,0,0,0,39,8.12,Far
+225,PC-3,PC,Worker,Vag.,684,1218,1,951,NA,8.12,Far
+226,PC-15,PC,Worker,Imp.,0,0,0,0,43,8.12,Far
+227,PC-13,PC,Worker,Vag.,0,0,0,0,NA,8.12,Far
+228,PC-?,PC,Worker,Imp.,0,0,0,0,38,8.12,Far
+229,MRW-12,MRW,Worker,Imp.,0,0,0,0,,8.6,Near
+230,MRW-1,MRW,Worker,Imp.,0,0,0,0,,8.6,Near
+231,MRW-15,MRW,Male,Imp.,0,0,0,0,,8.6,Near
+232,MRW-11,MRW,Worker,Imp.,0,0,0,0,,8.6,Near
+233,MRW-10,MRW,Worker,Imp.,0,0,0,0,,8.6,Near
+234,MRW-8,MRW,Worker,Tern.,0,0,0,0,35,8.6,Near
+235,MRW-3,MRW,Worker,Vag.,0,0,0,0,,8.6,Near
+236,MRW-19,MRW,Worker,Vag.,0,0,0,0,,8.6,Near
+237,MRW-13,MRW,Worker,Imp.,0,0,0,0,,8.6,Near
+238,MRW-7,MRW,Worker,Imp.,0,0,0,0,,8.6,Near
+
