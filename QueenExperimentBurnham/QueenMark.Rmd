@@ -55,7 +55,7 @@ ls()
 rm(list=ls())
 
 # Set Working Directory: 
-setwd("~/Desktop/QueenExperimentBurnham")
+setwd("~/AndreCollaborations/QueenExperimentBurnham")
 
 # Read in Data:
 QueenDF <- read.table("2016QueensHam.csv", header=TRUE, sep = ",", stringsAsFactors = FALSE) 
@@ -81,30 +81,6 @@ library(scales)
 
 ## Colony Mass:
 ```{r}
-QueenDF <- QueenDF[,c(1,2,3,5)]
-
-QueenDF <- QueenDF[which(complete.cases(QueenDF)),]
-
-QueenDF$Time <- as.factor(QueenDF$Time)
-QueenDF$Origin <- as.factor(QueenDF$Origin)
-QueenDF$FieldID <- as.factor(QueenDF$FieldID)
-
-head(QueenDF)
- 
-
-table(QueenDF$Origin)
-sum(table(QueenDF$Time, QueenDF$Origin))
-
-library(ez)
-
-mod <- ezANOVA(QueenDF, 
-        dv=Mass,
-        wid=FieldID,
-        within_full = Time,
-        between = Origin,
-        detailed=TRUE,
-        return_aov = TRUE)
-
 
 # MASS - use repeated measures anova to look at differences between local 
 # and california through time:
@@ -112,8 +88,6 @@ aov.out <- aov(Mass~Origin * Time + Error(FieldID), data=QueenDF)
 
 # look at summary of model:  SIGNIFICANT
 summary(aov.out)
-
-summary(mod$aov)
 
 ```
 
@@ -377,7 +351,7 @@ p1 <- ggplot(splitVir$DWV, aes(x=Time, y=mean, fill=Origin)) +
            position=position_dodge()) +
   geom_errorbar(aes(ymin=mean-se, ymax=mean+se), 
                 width=.4,
-                position=position_dodge(.9)) + labs(x="DWV", y = "Viral Load (band intensity)") + theme_classic(base_size = 17) + coord_cartesian(ylim = c(0, 4000000)) + scale_fill_manual(values=colors, name="Queen Origin", labels=c("California", "Local")) + theme(legend.position=c(3, 3), panel.border = element_blank(),
+                position=position_dodge(.9)) + labs(x="DWV", y = "Viral Load (band intensity)") + theme_classic(base_size = 17) + coord_cartesian(ylim = c(0, 4000000)) + scale_fill_manual(values=colors, name="Queen Origin", labels=c("California", "Local")) + theme(legend.position=c(.5, .9), panel.border = element_blank(),
 axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
 
 #------------------------------------------------------------------------
@@ -389,7 +363,7 @@ p2 <- ggplot(splitVir$BQCV, aes(x=Time, y=mean, fill=Origin)) +
   geom_errorbar(aes(ymin=mean-se, ymax=mean+se), 
                 width=.4,
                 position=position_dodge(.9)) + labs(x="BQCV", y = NULL) + theme_classic(base_size = 17) + coord_cartesian(ylim = c(0, 4000000)) + scale_fill_manual(values=colors, name="Queen Origin", labels=c("California", "Local")) + theme(legend.position=c(3, 3),axis.text.y=element_blank(),
-        axis.ticks.y=element_blank(),  panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + annotate(geom = "text", x = 1.5, y = 3900000, label = "***",cex = 6) + annotate("segment", x = 1, xend = 2, y = 3800000, yend = 3800000) + annotate("segment", x = 1, xend = 1, y = 3800000, yend = 1500000) + annotate("segment", x = 2, xend = 2, y = 3800000, yend = 3500000)
+        axis.ticks.y=element_blank(),  panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + annotate("segment", x = .5, xend = 2.5, y = 3900000, yend = 3900000) + annotate("segment", x = .5, xend = 1.4, y = 1500000, yend = 1500000) + annotate("segment", x = 1.5, xend = 2.5, y = 3600000, yend = 3600000) + annotate(geom = "text", x = 1.5, y = 4000000, label = "***",cex = 6) + annotate(geom = "text", x = 1, y = 1650000, label = "ns",cex = 5) + annotate(geom = "text", x = 2, y = 3750000, label = "ns",cex = 5)
 
 #------------------------------------------------------------------------
 #IAPV
@@ -399,8 +373,8 @@ p3 <- ggplot(splitVir$IAPV, aes(x=Time, y=mean, fill=Origin)) +
            position=position_dodge()) +
   geom_errorbar(aes(ymin=mean-se, ymax=mean+se), 
                 width=.4,
-                position=position_dodge(.9)) + labs(x="IAPV", y = NULL) + theme_classic(base_size = 17) + coord_cartesian(ylim = c(0, 4000000)) + scale_fill_manual(values=colors, name="Queen Origin", labels=c("California", "Local")) + theme(legend.position=c(.5, .9),axis.text.y=element_blank(),
-        axis.ticks.y=element_blank(),  panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + annotate(geom = "text", x = 0.78, y = 2350000, label = "A",cex = 4) + annotate(geom = "text", x = 1.23, y = 1200000, label = "B",cex = 4) + annotate(geom = "text", x = 1.78, y = 3050000, label = "A",cex = 4) + annotate(geom = "text", x = 2.23, y = 1600000, label = "B",cex = 4) 
+                position=position_dodge(.9)) + labs(x="IAPV", y = NULL) + theme_classic(base_size = 17) + coord_cartesian(ylim = c(0, 4000000)) + scale_fill_manual(values=colors, name="Queen Origin", labels=c("California", "Local")) + theme(legend.position=c(3, 3),axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),  panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + annotate("segment", x = .5, xend = 2.5, y = 3100000, yend = 3100000) + annotate("segment", x = .5, xend = 1.4, y = 2200000, yend = 2200000) + annotate("segment", x = 1.5, xend = 2.5, y = 2800000, yend = 2800000) + annotate(geom = "text", x = 1.5, y = 3250000, label = "ns",cex = 5) + annotate(geom = "text", x = 1, y = 2300000, label = "**",cex = 6) + annotate(geom = "text", x = 2, y = 2900000, label = "**",cex = 6)
 
 # merge figures into 1 side by side figure:
 grid.newpage()
