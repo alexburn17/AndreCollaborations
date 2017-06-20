@@ -328,7 +328,8 @@ summary(aov.out)
 
 ## Viral Load by Virus type at two time points for by queen origin
 ```{r, echo=FALSE}
-
+VirusDF$IntensityMult <- VirusDF$Band_Intensity*10^6
+VirusDFsplit <- split(VirusDF, VirusDF$Virus)
 
 # summary stats for plotting purposes:
 VirusSummary <- ddply(VirusDF, c("Origin", "Virus", "Time"), summarise, 
@@ -362,8 +363,8 @@ p2 <- ggplot(splitVir$BQCV, aes(x=Time, y=mean, fill=Origin)) +
            position=position_dodge()) +
   geom_errorbar(aes(ymin=mean-se, ymax=mean+se), 
                 width=.4,
-                position=position_dodge(.9)) + labs(x="BQCV", y = NULL) + theme_classic(base_size = 17) + coord_cartesian(ylim = c(0, 4000000)) + scale_fill_manual(values=colors, name="Queen Origin", labels=c("California", "Local")) + theme(legend.position=c(3, 3),axis.text.y=element_blank(),
-        axis.ticks.y=element_blank(),  panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + annotate("segment", x = .5, xend = 2.5, y = 3900000, yend = 3900000) + annotate("segment", x = .5, xend = 1.4, y = 1500000, yend = 1500000) + annotate("segment", x = 1.5, xend = 2.5, y = 3600000, yend = 3600000) + annotate(geom = "text", x = 1.5, y = 4000000, label = "***",cex = 6) + annotate(geom = "text", x = 1, y = 1650000, label = "ns",cex = 5) + annotate(geom = "text", x = 2, y = 3750000, label = "ns",cex = 5)
+                position=position_dodge(.9)) + labs(x="BQCV", y = NULL) + theme_classic(base_size = 17) + coord_cartesian(ylim = c(0, 4000000)) + scale_fill_manual(values=colors, name="Queen Origin", labels=c("California", "Local")) + theme(legend.position=c(3, 3), axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),  panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line.y = element_blank()) +  annotate("segment", x = .5, xend = 2.5, y = 3900000, yend = 3900000) + annotate("segment", x = .5, xend = 1.4, y = 1500000, yend = 1500000) + annotate("segment", x = 1.5, xend = 2.5, y = 3600000, yend = 3600000) + annotate(geom = "text", x = 1.5, y = 4000000, label = "***",cex = 6) + annotate(geom = "text", x = 1, y = 1650000, label = "ns",cex = 5) + annotate(geom = "text", x = 2, y = 3750000, label = "ns",cex = 5)
 
 #------------------------------------------------------------------------
 #IAPV
@@ -374,7 +375,7 @@ p3 <- ggplot(splitVir$IAPV, aes(x=Time, y=mean, fill=Origin)) +
   geom_errorbar(aes(ymin=mean-se, ymax=mean+se), 
                 width=.4,
                 position=position_dodge(.9)) + labs(x="IAPV", y = NULL) + theme_classic(base_size = 17) + coord_cartesian(ylim = c(0, 4000000)) + scale_fill_manual(values=colors, name="Queen Origin", labels=c("California", "Local")) + theme(legend.position=c(3, 3),axis.text.y=element_blank(),
-        axis.ticks.y=element_blank(),  panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + annotate("segment", x = .5, xend = 2.5, y = 3100000, yend = 3100000) + annotate("segment", x = .5, xend = 1.4, y = 2200000, yend = 2200000) + annotate("segment", x = 1.5, xend = 2.5, y = 2800000, yend = 2800000) + annotate(geom = "text", x = 1.5, y = 3250000, label = "ns",cex = 5) + annotate(geom = "text", x = 1, y = 2300000, label = "**",cex = 6) + annotate(geom = "text", x = 2, y = 2900000, label = "**",cex = 6)
+        axis.ticks.y=element_blank(), axis.line.y = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + annotate("segment", x = .5, xend = 2.5, y = 3100000, yend = 3100000) + annotate("segment", x = .5, xend = 1.4, y = 2200000, yend = 2200000) + annotate("segment", x = 1.5, xend = 2.5, y = 2800000, yend = 2800000) + annotate(geom = "text", x = 1.5, y = 3250000, label = "ns",cex = 5) + annotate(geom = "text", x = 1, y = 2300000, label = "**",cex = 6) + annotate(geom = "text", x = 2, y = 2900000, label = "**",cex = 6)
 
 # merge figures into 1 side by side figure:
 grid.newpage()
