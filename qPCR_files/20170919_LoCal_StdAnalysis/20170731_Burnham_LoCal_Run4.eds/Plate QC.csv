@@ -1,0 +1,8 @@
+# Experiment File Name : 20170731_Burnham_LoCal_Run4.eds
+# Created By :alexburn17@gmail.com
+# Last Modified Date : 2017-09-19 12:14:16 PM
+# Instrument Type : StepOnePlus System
+
+"Name","Plate Barcode","Experiment Run Date","Inter-plate Control Fail","FLAGS","AMPNC","AMPSCORE","BADROX","OFFSCALE","NOAMP","NOISE","SPIKE","NOSIGNAL","NOSAMPLE","EXPFAIL","BLFAIL","THOLDFAIL","CTFAIL","HIGHSD","OUTLIERRG","MTP","PRFLOW","PRFDROP","DRNMIN","CQCONF",
+"20170731_Burnham_LoCal_Run4.eds","","2017-07-31 06:16:18 PM","No","149.0","0.0","19.0","0.0","0.0","19.0","0.0","0.0","43.0","0.0","19.0","0.0","0.0","0.0","6.0","0.0","24.0","0.0","0.0","0.0","19.0",
+
