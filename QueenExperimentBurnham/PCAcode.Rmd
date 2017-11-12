@@ -1,0 +1,70 @@
+---
+title: "ExtraCode"
+author: "P. Alexander Burnham & Samantha A. Alger"
+date: "November 12, 2017"
+output: html_document
+---
+
+
+
+# PCA anlysis:
+
+## PCA for Time Point 1:
+```{r, message=FALSE}
+
+# run a PCA
+PCA3 <- prcomp(Dis1, scale. = T)
+
+
+# prepare PCA data frame
+PC1 <- as.vector(PCA3$x[,1])
+PC2 <- as.vector(PCA3$x[,2])
+Origin <- LoCal1x$Origin
+dat1 <- data.frame(PC1, PC2, Origin)
+
+# graph for PCA
+PCA2 <- ggplot(dat1, aes(PC1,PC2, color=Origin))+geom_point(size=2.5) + theme_minimal(base_size = 19) + scale_colour_manual(values = c("red", "blue")) + theme(axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'), axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid')) + stat_ellipse(show.legend = FALSE, level=.7)
+PCA2
+
+
+```
+
+
+
+
+
+
+## PCA for Time Point 2:
+```{r, message=FALSE}
+
+# PCA analysis 
+PC <- prcomp(Dis2, scale. = T)
+
+# prepare PCA data frame
+PC1 <- as.vector(PC$x[,1])
+PC2 <- as.vector(PC$x[,2])
+Origin <- LoCal2x$Origin
+dat <- data.frame(PC1, PC2, Origin)
+
+# graph for PCA
+PCA1 <- ggplot(dat, aes(PC1,PC2, color=Origin))+geom_point(size=2.5) + theme_minimal(base_size = 19) + scale_colour_manual(values = c("red", "blue")) + theme(axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'), axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid')) + stat_ellipse(show.legend = FALSE, level=.7)
+PCA1
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

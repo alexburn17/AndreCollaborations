@@ -55,7 +55,7 @@ ls()
 rm(list=ls())
 
 # Set Working Directory: 
-setwd("~/AndreCollaborations/QueenExperimentBurnham")
+setwd("~/BurnhamAlexPrivate/LocalCaliforniaStudy_Hamilton")
 
 # Read in Data:
 QueenDF <- read.table("2016QueensHam.csv", header=TRUE, sep = ",", stringsAsFactors = FALSE) 
@@ -155,6 +155,7 @@ axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'), panel.
 
 # use gridExtra package to combine the two figures:
 library(gridExtra)
+
 grid.newpage()
 grid.draw(rbind(ggplotGrob(plot), ggplotGrob(plot1), size = "last"))
 
